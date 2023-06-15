@@ -21,9 +21,10 @@ class Card:
 # a Deck can be shuffled
 # a Player can draw a Card from the top of the Deck
 class Deck:
-    def __init__(self):
+    def __init__(self, build):
         self.cards = []
-        self.buildDeck()
+        if build:
+            self.buildDeck()
 
     def show(self):
         for card in self.cards:
@@ -47,6 +48,19 @@ class Deck:
         random.shuffle(self.cards)
         for card in self.cards:
             card.orientation = random.choice(["upright", "reversed"])
+
+    def majorSplit(self):
+        aside = Deck(False)
+        for card in self.cards:
+            if card.suit == "major":
+                aside.cards.append(card)
+                self.cards.remove(card)
+        return aside
+    
+    def combine(self, other):
+        if isinstance(other, Deck):
+            self.cards.append(other.cards)
+        self.shuffle()
 
     # take card at end
     def draw(self):
@@ -93,7 +107,7 @@ class Player:
 # deck.show()
 
 # make deck
-deck = Deck()
+deck = Deck(True)
 deck.show()
 print("----------------")
 deck.shuffle()
@@ -109,3 +123,24 @@ for i in range(0,3):
     player.hand.append(deck.draw())
     player.show()
     print("----------------")
+
+# split major and minor arcana
+majors = deck.majorSplit()
+print("----------------")
+print(majors.show())
+print("----------------")
+print(deck.show())
+print("----------------")
+
+# draw a card from each deck
+player.hand.append(deck.draw())
+player.show()
+print("----------------")
+player.hand.append(majors.draw())
+player.show()
+print("----------------")
+
+# combine two decks
+deck.combine(majors.cards)
+print(deck.show())
+print("----------------")

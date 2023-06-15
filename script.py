@@ -17,7 +17,9 @@ class Card:
         else: 
             return "{} {}".format(self.orientation, self.rank)
     
-# a deck has a list of cards
+# a Deck has a list of Cards
+# a Deck can be shuffled
+# a Player can draw a Card from the top of the Deck
 class Deck:
     def __init__(self):
         self.cards = []
@@ -50,6 +52,10 @@ class Deck:
     def draw(self):
         return self.cards.pop()
 
+# a Player has the following
+#   a name
+#   a hand of Cards
+# a Player can show their hand
 class Player:
     def __init__(self, name):
         self.hand = []
